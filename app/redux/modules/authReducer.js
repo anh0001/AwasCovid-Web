@@ -23,6 +23,7 @@ export const AuthState = new Record({
   loading: false,
   loggedIn: null,
   user: null,
+  username: '',
   uid: null,
   message: null
 });
@@ -78,6 +79,7 @@ export default function authReducer(state = new AuthState(), action = {}) {
         ...state,
         loggedIn: action.user != null,
         user: action.user,
+        username: action.user.username,
         loading: false,
       };
 

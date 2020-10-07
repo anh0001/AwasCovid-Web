@@ -30,7 +30,7 @@ class Firebase {
         this.db = firebase.database();
     }
 
-    // AUTH ACTIONS 
+    // AUTH ACTIONS
     // --------
 
     createAccount = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
@@ -154,21 +154,21 @@ class Firebase {
         });
     }
 
-    getUserProducts = (userId, lastRefKey) => {
+    getUserImages = (username, lastRefKey) => {
         let didTimeout = false;
 
         return new Promise(async (resolve, reject) => {
             if (lastRefKey) {
                 try {
-                    const query = this.dbFirestore.collection('allProducts').doc(userId).collection('productsInfo').orderBy(firebase.firestore.FieldPath.documentId()).startAfter(lastRefKey).limit(100);
+                    const query = this.dbFirestore.collection('images').where('username', '==', username).orderBy('date_created', 'desc').startAfter(lastRefKey).limit(100);
                     const snapshot = await query.get();
-                    const products = [];
-                    snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+                    const images = [];
+                    snapshot.forEach(doc => images.push({ id: doc.id, ...doc.data() }));
                     const lastKey = snapshot.docs[snapshot.docs.length - 1];
 
-                    resolve({ products, lastKey });
+                    resolve({ images, lastKey });
                 } catch (e) {
-                    reject(':( Failed to fetch products.');
+                    reject(':( Failed to fetch images.');
                 }
             } else {
                 const timeout = setTimeout(() => {
@@ -181,27 +181,29 @@ class Firebase {
 
                     // adding shallow parameter for smaller response size
                     // better than making a query from firebase
-                    // NOT AVAILEBLE IN FIRESTORE const request = await fetch(`${process.env.FIREBASE_DB_URL}/products.json?shallow=true`);
+                    // NOT AVAILEBLE IN FIRESTORE const request = await fetch(`${process.env.FIREBASE_DB_URL}/images.json?shallow=true`);
 
-                    const totalQuery = await this.dbFirestore.collection('allProducts').doc(userId).collection('productsInfo').get();
+                    const totalQuery = await this.dbFirestore.collection('images').where('username', '==', username).get();
                     const total = totalQuery.docs.length;
-                    const query = this.dbFirestore.collection('allProducts').doc(userId).collection('productsInfo').orderBy(firebase.firestore.FieldPath.documentId()).limit(100);
+                    // console.log('totalQuery: ', total);
+                    const query = await this.dbFirestore.collection('images').where('username', '==', username).orderBy('date_created', 'desc').limit(100);
+                    // console.log('query: ', query);
                     const snapshot = await query.get();
 
                     // console.log('snapshot: ', snapshot);
 
                     clearTimeout(timeout);
                     if (!didTimeout) {
-                        const products = [];
-                        snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+                        const images = [];
+                        snapshot.forEach(doc => images.push({ id: doc.id, ...doc.data() }));
                         const lastKey = snapshot.docs[snapshot.docs.length - 1];
 
-                        resolve({ products, lastKey, total });
+                        resolve({ images, lastKey, total });
                     }
                 } catch (e) {
                     if (didTimeout) return;
-                    console.log('Failed to fetch products: An error occured while trying to fetch products or there may be no product ', e);
-                    reject(':( Failed to fetch products.');
+                    console.log('Failed to fetch images: An error occured while trying to fetch images or there may be no image ', e);
+                    reject(':( Failed to fetch images.');
                 }
             }
         });

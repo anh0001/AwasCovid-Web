@@ -107,8 +107,13 @@ function* syncUserSaga() {
   while (true) {
     const { user } = yield take(channel);
     if (user) {
-      // console.log('user', user);
-      yield put(syncUser(user));
+      const snapshot = yield call(firebase.getUser, user.uid);
+      if (snapshot.exists) {
+        // console.log('username: ', snapshot.data().username);
+        yield put(syncUser({ ...user, username: snapshot.data().username }));
+      } else {
+        yield put(syncUser(user));
+      }
     } else {
       yield put(syncUser(null));
     }
