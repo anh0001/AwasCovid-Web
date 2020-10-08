@@ -11,6 +11,7 @@ export SelectLanguage from './SelectLanguage';
 export GlobalSetting from './Setting/GlobalSetting';
 export ImageCard from './CardPaper/ImageCard';
 export ImageGallery from './Images/ImageGallery';
+export SearchImage from './Search/SearchImage';
 // Guide
 export GuideSlider from './GuideSlider';
 // Form

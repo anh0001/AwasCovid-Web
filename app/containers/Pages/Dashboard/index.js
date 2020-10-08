@@ -9,8 +9,8 @@ import injectReducer from 'utils/injectReducer';
 import {
   PapperBlock,
   GlobalSetting,
-  ImageCard,
   ImageGallery,
+  SearchImage,
 } from 'enl-components';
 
 import reducer from './reducers/dashboardReducers';
@@ -26,6 +26,7 @@ import {
   openGlobalSettingAction,
   closeGlobalSettingFormAction,
   getUserImagesAction,
+  searchImagesAction,
 } from './reducers/dashboardActions';
 
 
@@ -125,6 +126,7 @@ class BasicTable extends Component {
       dataImages,
       imageIndex,
       keyword,
+      searchImagesHandler,
     } = this.props;
 
     // console.log('dataImages: ', this.props.dataImages);
@@ -141,6 +143,15 @@ class BasicTable extends Component {
         </Helmet>
         <PapperBlock title="Monitoring" icon="camera_alt" desc="" overflowX>
           <div>
+            <SearchImage
+              dataImages={dataImages}
+              // removeItem={removeItem}
+              search={searchImagesHandler}
+              keyword={keyword}
+              listView={listView}
+              handleSwitchView={this.handleSwitchView}
+            />
+
             <ImageGallery
               listView={listView}
               dataImages={dataImages}
@@ -200,6 +211,7 @@ BasicTable.propTypes = {
   imageIndex: PropTypes.number.isRequired,
   keyword: PropTypes.string.isRequired,
   getUserImagesHandler: PropTypes.func.isRequired,
+  searchImagesHandler: PropTypes.func.isRequired,
 };
 
 BasicTable.defaultProps = {
@@ -226,6 +238,7 @@ const mapDispatchToProps = dispatch => ({
   openGlobalSettingHandler: () => dispatch(openGlobalSettingAction),
   closeGlobalSettingFormHandler: () => dispatch(closeGlobalSettingFormAction),
   getUserImagesHandler: bindActionCreators(getUserImagesAction, dispatch),
+  searchImagesHandler: bindActionCreators(searchImagesAction, dispatch),
 });
 
 const withReducer = injectReducer({ key: reducerKey, reducer });

@@ -10,6 +10,7 @@ import {
     CLOSE_GLOBAL_SETTING_FORM,
     OPEN_DEVICE_SETTING,
     CLOSE_DEVICE_SETTING_FORM,
+    SEARCH_IMAGES,
 } from './dashboardConstants';
 
 export const initialState = {
@@ -36,6 +37,12 @@ export default function dashboardReducer(state = initialImmutableState, action =
             return state.withMutations((mutableState) => {
                 const items = fromJS(action.items);
                 mutableState.set('imagesList', items);
+            });
+        case SEARCH_IMAGES:
+            return state.withMutations((mutableState) => {
+                action.keyword.persist();
+                const keyword = action.keyword.target.value.toLowerCase();
+                mutableState.set('keywordValue', keyword);
             });
         case GET_USER_IMAGES_SUCCESS:
             return state.withMutations((mutableState) => {

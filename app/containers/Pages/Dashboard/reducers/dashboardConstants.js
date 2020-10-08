@@ -11,3 +11,4 @@ export const GET_IMAGES = 'Pages/Dashboard/GET_IMAGES';
 export const GET_USER_IMAGES = 'Pages/Dashboard/GET_USER_IMAGES';
 export const GET_USER_IMAGES_SUCCESS = 'Pages/Dashboard/GET_USER_IMAGES_SUCCESS';
 export const GET_IMAGES_SUCCESS = 'Pages/Dashboard/GET_IMAGES_SUCCESS';
+export const SEARCH_IMAGES = 'Pages/Dashboard/SEARCH_IMAGES';

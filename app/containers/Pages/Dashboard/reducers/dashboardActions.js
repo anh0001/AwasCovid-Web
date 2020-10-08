@@ -9,6 +9,11 @@ export const fetchImagesAction = items => ({
     items,
 });
 
+export const searchImagesAction = keyword => ({
+    type: types.SEARCH_IMAGES,
+    keyword,
+  });
+
 export const getUserImagesAction = (username, lastRef) => ({
     type: types.GET_USER_IMAGES,
     username,

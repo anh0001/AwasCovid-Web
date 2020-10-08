@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import ImageCard from '../CardPaper/ImageCard';
+import Typography from '@material-ui/core/Typography';
 
 class ImageGallery extends React.Component {
   state = {
@@ -63,9 +64,18 @@ class ImageGallery extends React.Component {
                     image={item.get('photo_output_filename')}
                     title={item.get('device_id')}
                   >
-                    {'Dev_id = ' + item.get('device_id') + ', '}
-                    {'Image_id = ' + item.get('image_id') + ', '}
-                    {'Date = ' + item.get('date_created')}
+                    <Typography variant="caption" gutterBottom align="left">
+                      {'Dev_id = ' + item.get('device_id') + ', '}
+                      {'Image_id = ' + item.get('image_id') + ', '}
+                      {'Date = ' + Intl.DateTimeFormat('en-US', {
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        second: "2-digit"
+                      }).format(item.get('date_created'))}
+                    </Typography>
                   </ImageCard>
                 </Grid>
               );
@@ -85,7 +95,7 @@ ImageGallery.propTypes = {
 };
 
 ImageGallery.defaultProps = {
-  
+
 };
 
 export default ImageGallery;
